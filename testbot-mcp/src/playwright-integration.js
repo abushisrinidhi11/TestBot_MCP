@@ -429,9 +429,9 @@ module.exports = defineConfig({
   ],
   use: {
     baseURL: '${baseURL}',
-    trace: 'retain-on-failure',
-    screenshot: 'only-on-failure',
-    video: safeRetry ? 'off' : 'retain-on-failure',
+    trace: process.env.HEALIX_ARTIFACT_MODE === 'full' ? 'on' : 'retain-on-failure',
+    screenshot: process.env.HEALIX_ARTIFACT_MODE === 'full' ? 'on' : 'only-on-failure',
+    video: process.env.HEALIX_ARTIFACT_MODE === 'full' ? 'on' : (safeRetry ? 'off' : 'retain-on-failure'),
     launchOptions: safeRetry ? { args: stableLaunchArgs } : undefined,
   },
   projects: [
@@ -656,6 +656,7 @@ module.exports = defineConfig({
       ...process.env,
       BASE_URL: this.config.baseURL,
       NODE_PATH: [...new Set([...extraNodePaths, ...currentNodePath])].join(path.delimiter),
+      HEALIX_ARTIFACT_MODE: this.config.artifactMode || 'full',
     };
   }
 

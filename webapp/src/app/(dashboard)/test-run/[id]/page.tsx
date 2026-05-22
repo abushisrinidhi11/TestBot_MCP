@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { TestRun, TestFailure, FailureVerdict, QaFinding, FindingSummary } from '@/lib/types/database';
+import TierPillBanner from '@/components/dashboard/TierPillBanner';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -3924,6 +3925,12 @@ export default function TestRunDetailPage() {
           </div>
         </div>
       </motion.div>
+
+      <TierPillBanner
+        failures={testRun.test_failures || []}
+        status={testRun.status}
+        lastHeartbeatAt={testRun.last_heartbeat_at}
+      />
 
       {pipelineError && (
         <PipelineErrorBanner error={pipelineError as PipelineErrorShape} runId={testRun.id} />
